@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MotionCut</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <span class="logo">MotionCut</span>
+        <button id="newBtn">New</button>
+        <button id="importBtn">Import media</button>
+        <button id="textBtn">Add text</button>
+        <span class="sep"></span>
+        <button id="undoBtn" title="Undo (⌘Z / Ctrl+Z)">Undo</button>
+        <button id="redoBtn" title="Redo (⌘⇧Z / Ctrl+Shift+Z)">Redo</button>
+        <button id="splitBtn" title="Split at playhead (S)">Split</button>
+        <button id="dupBtn" title="Duplicate (⌘D / Ctrl+D)">Duplicate</button>
+        <button id="delBtn" title="Delete (Delete / Backspace)">Delete</button>
+        <span class="spacer"></span>
+        <label class="res">Canvas
+            <select id="resolution">
+                <option value="1280x720">1280×720 (16:9)</option>
+                <option value="1920x1080">1920×1080 (16:9)</option>
+                <option value="1080x1920">1080×1920 (9:16)</option>
+                <option value="1080x1080">1080×1080 (1:1)</option>
+            </select>
+        </label>
+        <button id="shareBtn" class="share">Share</button>
+        <button id="exportBtn" class="primary">Export</button>
+    </header>
+
+    <aside class="bin" id="bin">
+        <h2>Media</h2>
+        <div id="media" class="media-grid"></div>
+        <p class="hint">Drop video, audio or image files here or on the timeline. Drag a tile onto a track, or double-click it to add at the playhead.</p>
+    </aside>
+
+    <main class="viewer">
+        <div class="screen" id="screen">
+            <canvas id="preview" width="1280" height="720"></canvas>
+        </div>
+        <div class="transport">
+            <button id="startBtn" title="Go to start (Home)" aria-label="Go to start">⏮</button>
+            <button id="backBtn" title="Back one frame (←)" aria-label="Back one frame">◀</button>
+            <button id="playBtn" title="Play / Pause (Space)" aria-label="Play">▶</button>
+            <button id="fwdBtn" title="Forward one frame (→)" aria-label="Forward one frame">▶▏</button>
+            <span id="timecode">0:00.00 / 0:00.00</span>
+        </div>
+    </main>
+
+    <aside class="props" id="props"></aside>
+
+    <footer class="timeline">
+        <div class="tl-bar">
+            <button id="addVideoTrack">+ Video track</button>
+            <button id="addAudioTrack">+ Audio track</button>
+            <span id="status" role="status"></span>
+            <span id="people"></span>
+            <span class="spacer"></span>
+            <label class="zoomlabel">Zoom <input type="range" id="zoom" min="0" max="100" value="45"></label>
+        </div>
+        <div class="tl-body">
+            <div class="heads" id="heads"></div>
+            <div class="lanes-wrap" id="lanesWrap">
+                <div class="lanes" id="lanes">
+                    <canvas id="ruler" height="24"></canvas>
+                    <div id="tracks"></div>
+                    <div class="playhead" id="playhead"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="overlay" id="exportOverlay" hidden>
+        <div class="exportbox">
+            <h2>Exporting…</h2>
+            <p class="hint">Plays the timeline in real time while recording. Keep this tab open.</p>
+            <div class="bar"><div id="exportBar"></div></div>
+            <button id="cancelExport">Cancel</button>
+        </div>
+    </div>
+
+    <dialog id="shareDlg">
+        <form method="dialog">
+            <h2>Multiplayer</h2>
+            <label class="namefield">Your name <input id="myName" maxlength="24" autocomplete="nickname"></label>
+            <div id="netOff" class="stack">
+                <p class="hint">Host a session and share the code, or join someone else's with theirs.</p>
+                <button type="button" id="hostBtn" class="primary">Host a session</button>
+                <label>Join code <input id="joinCode" class="codein" maxlength="6" autocomplete="off" spellcheck="false" placeholder="ABC123"></label>
+                <button type="button" id="joinBtn">Join</button>
+            </div>
+            <div id="netOn" class="stack" hidden>
+                <output id="codeOut" class="code"></output>
+                <p id="netInfo" class="hint"></p>
+                <button type="button" id="copyCodeBtn">Copy code</button>
+                <button type="button" id="leaveBtn">Leave session</button>
+            </div>
+            <div class="buttons">
+                <button value="close">Close</button>
+            </div>
+        </form>
+    </dialog>
+
+    <input type="file" id="fileInput" accept="video/*,audio/*,image/*" multiple hidden>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
